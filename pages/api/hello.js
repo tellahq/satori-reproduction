@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import satori from "satori";
 
-export default async function handler(req, res) {
-  const svg = await satori(
+function renderSvg() {
+  return satori(
     <div
       style={{
         backgroundColor: "tomato",
@@ -21,7 +21,11 @@ export default async function handler(req, res) {
       fonts: [],
     }
   );
+}
+
+export default async function handler(req, res) {
+  const svgs = await Promise.all([renderSvg(), renderSvg(), renderSvg()]);
 
   res.setHeader("Content-Type", "image/svg+xml");
-  res.status(200).send(svg);
+  res.status(200).send(svg[0]);
 }
